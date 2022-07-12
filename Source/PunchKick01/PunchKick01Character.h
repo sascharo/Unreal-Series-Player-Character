@@ -7,7 +7,8 @@
 #include "PunchKick01Character.generated.h"
 
 UENUM(BlueprintType)
-enum class ELogLevel : uint8 {
+enum class ELogLevel : uint8
+{
 	TRACE			UMETA(DisplayName = "Trace"),
 	DEBUG			UMETA(DisplayName = "Debug"),
 	INFO			UMETA(DisplayName = "Info"),
@@ -16,17 +17,30 @@ enum class ELogLevel : uint8 {
 };
 
 UENUM(BlueprintType)
-enum class ELogOutput : uint8 {
+enum class ELogOutput : uint8
+{
 	ALL				UMETA(DisplayName = "All levels"),
 	OUTPUT_LOG		UMETA(DisplayName = "Output log"),
 	SCREEN			UMETA(DisplayName = "Screen")
 };
 
 UENUM(BlueprintType)
-enum class EAttackType : uint8 {
+enum class EAttackType : uint8
+{
 	MELEE_FIST			UMETA(DisplayName = "Melee - Fist")
 };
 
+/*
+ *
+ */
+UENUM(Blueprintable, meta = (Bitflags))
+enum class EAttackSection : uint8
+{
+	Start_1,
+	Start_2,
+	//Count UMETA(Hidden)
+};
+ENUM_CLASS_FLAGS(EAttackSection)
 
 UCLASS(config=Game)
 class APunchKick01Character : public ACharacter
@@ -40,6 +54,28 @@ class APunchKick01Character : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+	//UPROPERTY(EditAnywhere, Category = Animation, meta = (AllowPrivateAccess = true))
+	//TSubclassOf<UAnimMontage> MeleeFistAttack;
+
+	/* Melee fist attack montage */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	UAnimMontage* MeleeFistAttackMontage;
+
+	/* Melee attack play rate */
+	UPROPERTY(EditAnywhere, Category = Animation, meta = (AllowPrivateAccess = "true", UIMin = -2.f, UIMax=2.f))
+	float AttackPlayRate = 1.f;
+
+	//UPROPERTY(EditAnywhere, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	//FName AttackSection = "Start_1";
+
+	//UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (Bitmask, BitmaskEnum = "EAttackSection", AllowPrivateAccess = true))
+	//uint8 AttackSections;
+
+	/* Number of melee attack sections */
+	UPROPERTY(EditAnywhere, Category = Animation, DisplayName = "Number Of Attacks", meta = (AllowPrivateAccess = "true", ClampMin = 1, ClampMax = 2, UIMin = 1, UIMax = 2, AllowPrivateAccess = true))
+	int32 NumberOfAttackSections = 2;
+
 public:
 	APunchKick01Character();
 
@@ -52,7 +88,6 @@ public:
 	float BaseLookUpRate;
 
 protected:
-
 	/** Resets HMD orientation in VR. */
 	void OnResetVR();
 
@@ -91,6 +126,16 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+	/*
+	* AttackStart - trrigered when the player initiates an attack
+	*/
+	void AttackStart();
+
+	/*
+	* AttackEnd - trrigered when the player stops the attack
+	*/
+	void AttackEnd();
+
 private:
 	/**
 	* Log - prints a message to all the log outputs with a specific color
@@ -106,4 +151,3 @@ private:
 	*/
 	void Log(ELogLevel LogLevel, FString Message, ELogOutput LogOutput);
 };
-

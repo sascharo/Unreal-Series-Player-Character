@@ -11,6 +11,9 @@
 
 #include "Engine.h"
 
+#include <bitset>
+#include <string> 
+
 //////////////////////////////////////////////////////////////////////////
 // APunchKick01Character
 
@@ -47,6 +50,13 @@ APunchKick01Character::APunchKick01Character()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	/* load our animation montage */
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MeleeFistAttackMontageObj(TEXT("AnimMontage'/Game/TUTORIAL_RESOURCES/Animations/Montages/MeleeFistAttackMontage.MeleeFistAttackMontage'"));
+	if (MeleeFistAttackMontageObj.Succeeded())
+	{
+		MeleeFistAttackMontage = MeleeFistAttackMontageObj.Object;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,6 +86,10 @@ void APunchKick01Character::SetupPlayerInputComponent(class UInputComponent* Pla
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APunchKick01Character::OnResetVR);
+
+	// Attack functionality
+	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &APunchKick01Character::AttackStart);
+	PlayerInputComponent->BindAction("Attack", IE_Released, this, &APunchKick01Character::AttackStart);
 }
 
 
@@ -86,12 +100,12 @@ void APunchKick01Character::OnResetVR()
 
 void APunchKick01Character::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		Jump();
+	Jump();
 }
 
 void APunchKick01Character::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		StopJumping();
+	StopJumping();
 }
 
 void APunchKick01Character::TurnAtRate(float Rate)
@@ -122,7 +136,7 @@ void APunchKick01Character::MoveForward(float Value)
 
 void APunchKick01Character::MoveRight(float Value)
 {
-	if ( (Controller != NULL) && (Value != 0.0f) )
+	if ( (Controller != nullptr) && (Value != 0.0f) )
 	{
 		// find out which way is right
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -133,6 +147,30 @@ void APunchKick01Character::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void APunchKick01Character::AttackStart()
+{
+	Log(ELogLevel::INFO, __FUNCTION__);
+
+	//std::bitset<32> Xxx(AttackSections);
+	//Xxx.set();
+	//std::string mystring = Xxx.to_string<char, std::string::traits_type, std::string::allocator_type>();
+	//FString unrealString(mystring.c_str());
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *unrealString);
+
+	/* generate a random number between 1 and 2 */
+	const int MontageSectionIndex = rand() % NumberOfAttackSections + 1;
+
+	/* FString animation section */
+	const FString MontageSection = "Start_" + FString::FromInt(MontageSectionIndex);
+
+	PlayAnimMontage(MeleeFistAttackMontage, AttackPlayRate, FName(*MontageSection));
+}
+
+void APunchKick01Character::AttackEnd()
+{
+	Log(ELogLevel::INFO, __FUNCTION__);
 }
 
 void APunchKick01Character::Log(ELogLevel LogLevel, FString Message)
