@@ -14,6 +14,3 @@ class APunchKick01GameMode : public AGameModeBase
 public:
 	APunchKick01GameMode();
 };
-
-
-

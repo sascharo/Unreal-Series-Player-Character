@@ -159,8 +159,12 @@ void APunchKick01Character::AttackStart()
 	//FString unrealString(mystring.c_str());
 	//UE_LOG(LogTemp, Warning, TEXT("%s"), *unrealString);
 
-	/* generate a random number between 1 and 2 */
-	const int MontageSectionIndex = rand() % NumberOfAttackSections + 1;
+	/* generate a random number between 1 and 3 */
+	//const int MontageSectionIndex = rand() % NumberOfAttackSections + 1;
+	const auto CurrentTime = FApp::GetCurrentTime();
+	const FRandomStream RandStream(NumberOfAttacksSeed + CurrentTime);
+	const int MontageSectionIndex = RandStream.RandRange(MIN_uint8, MAX_uint8) % NumberOfAttackSections + 1;
+	//UE_LOG(LogTemp, Warning, TEXT("%i - %i - %i"), RandStream.RandRange(MIN_uint8, MAX_uint8), NumberOfAttackSections, MontageSectionIndex);
 
 	/* FString animation section */
 	const FString MontageSection = "Start_" + FString::FromInt(MontageSectionIndex);

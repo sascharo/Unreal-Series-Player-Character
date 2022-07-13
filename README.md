@@ -1,4 +1,4 @@
-# Player Character Series - Punch - Part 1 
+# Player Character Series - Punch
 
 Hey guys,
 

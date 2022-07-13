@@ -72,9 +72,14 @@ class APunchKick01Character : public ACharacter
 	//UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (Bitmask, BitmaskEnum = "EAttackSection", AllowPrivateAccess = true))
 	//uint8 AttackSections;
 
+	UPROPERTY(EditAnywhere, Category = Animation,
+		meta = (AllowPrivateAccess = "true", ClampMin = 0, UIMin = 0, UIMax = 100, AllowPrivateAccess = true))
+	int32 NumberOfAttacksSeed = 0;
+
 	/* Number of melee attack sections */
-	UPROPERTY(EditAnywhere, Category = Animation, DisplayName = "Number Of Attacks", meta = (AllowPrivateAccess = "true", ClampMin = 1, ClampMax = 2, UIMin = 1, UIMax = 2, AllowPrivateAccess = true))
-	int32 NumberOfAttackSections = 2;
+	UPROPERTY(EditAnywhere, Category = Animation, /*DisplayName = "Number Of Attacks",*/
+		meta = (AllowPrivateAccess = "true", ClampMin = 1, ClampMax = 3, UIMin = 1, UIMax = 3, AllowPrivateAccess = true))
+	int32 NumberOfAttackSections = 3;
 
 public:
 	APunchKick01Character();
