@@ -52,7 +52,8 @@ APunchKick01Character::APunchKick01Character()
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
 	/* load our animation montage */
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> MeleeFistAttackMontageObj(TEXT("AnimMontage'/Game/TUTORIAL_RESOURCES/Animations/Montages/MeleeFistAttackMontage.MeleeFistAttackMontage'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MeleeFistAttackMontageObj(
+		TEXT("AnimMontage'/Game/TUTORIAL_RESOURCES/Animations/Montages/MeleeFistAttackMontageA.MeleeFistAttackMontageA'"));
 	if (MeleeFistAttackMontageObj.Succeeded())
 	{
 		MeleeFistAttackMontage = MeleeFistAttackMontageObj.Object;
@@ -91,7 +92,6 @@ void APunchKick01Character::SetupPlayerInputComponent(class UInputComponent* Pla
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &APunchKick01Character::AttackStart);
 	PlayerInputComponent->BindAction("Attack", IE_Released, this, &APunchKick01Character::AttackStart);
 }
-
 
 void APunchKick01Character::OnResetVR()
 {
@@ -164,7 +164,7 @@ void APunchKick01Character::AttackStart()
 	const auto CurrentTime = FApp::GetCurrentTime();
 	const FRandomStream RandStream(NumberOfAttacksSeed + CurrentTime);
 	const int MontageSectionIndex = RandStream.RandRange(MIN_uint8, MAX_uint8) % NumberOfAttackSections + 1;
-	//UE_LOG(LogTemp, Warning, TEXT("%i - %i - %i"), RandStream.RandRange(MIN_uint8, MAX_uint8), NumberOfAttackSections, MontageSectionIndex);
+	//UE_LOG(LogTemp, Warning, TEXT("%i - %i"), NumberOfAttackSections, MontageSectionIndex);
 
 	/* FString animation section */
 	const FString MontageSection = "Start_" + FString::FromInt(MontageSectionIndex);

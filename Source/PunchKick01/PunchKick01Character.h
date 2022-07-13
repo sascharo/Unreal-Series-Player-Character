@@ -33,14 +33,14 @@ enum class EAttackType : uint8
 /*
  *
  */
-UENUM(Blueprintable, meta = (Bitflags))
+/*UENUM(Blueprintable, meta = (Bitflags))
 enum class EAttackSection : uint8
 {
 	Start_1,
 	Start_2,
 	//Count UMETA(Hidden)
 };
-ENUM_CLASS_FLAGS(EAttackSection)
+ENUM_CLASS_FLAGS(EAttackSection)*/
 
 UCLASS(config=Game)
 class APunchKick01Character : public ACharacter
