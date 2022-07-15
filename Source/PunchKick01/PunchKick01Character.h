@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Components/BoxComponent.h"
 #include "PunchKick01Character.generated.h"
 
 UENUM(BlueprintType)
@@ -73,16 +74,25 @@ class APunchKick01Character : public ACharacter
 	//uint8 AttackSections;
 
 	UPROPERTY(EditAnywhere, Category = Animation,
-		meta = (AllowPrivateAccess = "true", ClampMin = 0, UIMin = 0, UIMax = 100, AllowPrivateAccess = true))
+		meta = (AllowPrivateAccess = true, ClampMin = 0, UIMin = 0, UIMax = 100))
 	int32 NumberOfAttacksSeed = 0;
 
 	/* Number of melee attack sections */
 	UPROPERTY(EditAnywhere, Category = Animation, /*DisplayName = "Number Of Attacks",*/
-		meta = (AllowPrivateAccess = "true", ClampMin = 1, ClampMax = 3, UIMin = 1, UIMax = 3, AllowPrivateAccess = true))
+		meta = (AllowPrivateAccess = true, ClampMin = 1, ClampMax = 3, UIMin = 1, UIMax = 3))
 	int32 NumberOfAttackSections = 3;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = true))
+	UBoxComponent* FistColBoxLeft;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = true))
+	UBoxComponent* FistColBoxRight;
 
 public:
 	APunchKick01Character();
+
+	/* Called when the game starts or when the player is spawn */
+	virtual void BeginPlay() override;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)

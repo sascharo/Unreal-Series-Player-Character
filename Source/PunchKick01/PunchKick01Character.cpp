@@ -58,6 +58,29 @@ APunchKick01Character::APunchKick01Character()
 	{
 		MeleeFistAttackMontage = MeleeFistAttackMontageObj.Object;
 	}
+
+	/* create collision boxes */
+	const auto Scale = FVector(0.2f);
+	FistColBoxLeft = CreateDefaultSubobject<UBoxComponent>(TEXT("FistCollisionBoxLeft"));
+	FistColBoxLeft->SetupAttachment(RootComponent);
+	FistColBoxLeft->SetWorldScale3D(Scale);
+	//FistColBoxLeft->SetHiddenInGame(false);
+	FistColBoxRight = CreateDefaultSubobject<UBoxComponent>(TEXT("FistCollisionBoxRight"));
+	FistColBoxRight->SetupAttachment(RootComponent);
+	FistColBoxLeft->SetWorldScale3D(Scale);
+	//FistColBoxLeft->SetHiddenInGame(false);
+}
+
+void APunchKick01Character::BeginPlay()
+{
+	Super::BeginPlay();
+
+	/* attach collision component to sockets based on transformation definition */
+	const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget,
+		EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false);
+
+	FistColBoxLeft->AttachToComponent(GetMesh(), AttachmentRules, "sock_hand_l_col");
+	FistColBoxRight->AttachToComponent(GetMesh(), AttachmentRules, "sock_hand_r_col");
 }
 
 //////////////////////////////////////////////////////////////////////////
