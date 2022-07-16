@@ -64,10 +64,14 @@ APunchKick01Character::APunchKick01Character()
 	FistColBoxLeft = CreateDefaultSubobject<UBoxComponent>(TEXT("FistCollisionBoxLeft"));
 	FistColBoxLeft->SetupAttachment(RootComponent);
 	FistColBoxLeft->SetWorldScale3D(Scale);
-	//FistColBoxLeft->SetHiddenInGame(false);
+	FistColBoxLeft->SetCollisionProfileName("NoCollision");
+
 	FistColBoxRight = CreateDefaultSubobject<UBoxComponent>(TEXT("FistCollisionBoxRight"));
 	FistColBoxRight->SetupAttachment(RootComponent);
-	FistColBoxLeft->SetWorldScale3D(Scale);
+	FistColBoxRight->SetWorldScale3D(Scale);
+	FistColBoxRight->SetCollisionProfileName("NoCollision");
+
+	//FistColBoxLeft->SetHiddenInGame(false);
 	//FistColBoxLeft->SetHiddenInGame(false);
 }
 
