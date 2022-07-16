@@ -94,6 +94,16 @@ public:
 	/* Called when the game starts or when the player is spawn */
 	virtual void BeginPlay() override;
 
+	/*
+	* AttackStart - trrigered when the player initiates an attack
+	*/
+	void AttackStart();
+
+	/*
+	* AttackEnd - trrigered when the player stops the attack
+	*/
+	void AttackEnd();
+
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
@@ -140,16 +150,6 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-
-	/*
-	* AttackStart - trrigered when the player initiates an attack
-	*/
-	void AttackStart();
-
-	/*
-	* AttackEnd - trrigered when the player stops the attack
-	*/
-	void AttackEnd();
 
 private:
 	/**
