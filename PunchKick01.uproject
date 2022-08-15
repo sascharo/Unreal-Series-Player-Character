@@ -22,5 +22,9 @@
 			"Name": "OculusVR",
 			"Enabled": false
 		}
+	],
+	"TargetPlatforms": [
+		"AllDesktop",
+		"WindowsNoEditor"
 	]
 }

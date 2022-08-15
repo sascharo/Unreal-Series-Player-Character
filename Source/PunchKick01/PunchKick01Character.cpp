@@ -1,5 +1,3 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
 #include "PunchKick01Character.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
@@ -113,11 +111,11 @@ void APunchKick01Character::SetupPlayerInputComponent(class UInputComponent* Pla
 	PlayerInputComponent->BindTouch(IE_Released, this, &APunchKick01Character::TouchStopped);
 
 	// VR headset functionality
-	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APunchKick01Character::OnResetVR);
+	//PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APunchKick01Character::OnResetVR);
 
 	// Attack functionality
-	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &APunchKick01Character::AttackStart);
-	PlayerInputComponent->BindAction("Attack", IE_Released, this, &APunchKick01Character::AttackStart);
+	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &APunchKick01Character::AttackInput);
+	PlayerInputComponent->BindAction("Attack", IE_Released, this, &APunchKick01Character::AttackEnd);
 }
 
 void APunchKick01Character::OnResetVR()
@@ -149,7 +147,7 @@ void APunchKick01Character::LookUpAtRate(float Rate)
 
 void APunchKick01Character::MoveForward(float Value)
 {
-	if ((Controller != NULL) && (Value != 0.0f))
+	if ((Controller != NULL) && (Value != 0.f))
 	{
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -163,7 +161,7 @@ void APunchKick01Character::MoveForward(float Value)
 
 void APunchKick01Character::MoveRight(float Value)
 {
-	if ( (Controller != nullptr) && (Value != 0.0f) )
+	if ( (Controller != nullptr) && (Value != 0.f) )
 	{
 		// find out which way is right
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -176,7 +174,7 @@ void APunchKick01Character::MoveRight(float Value)
 	}
 }
 
-void APunchKick01Character::AttackStart()
+void APunchKick01Character::AttackInput()
 {
 	Log(ELogLevel::INFO, __FUNCTION__);
 
@@ -199,9 +197,20 @@ void APunchKick01Character::AttackStart()
 	PlayAnimMontage(MeleeFistAttackMontage, AttackPlayRate, FName(*MontageSection));
 }
 
+void APunchKick01Character::AttackStart()
+{
+	Log(ELogLevel::INFO, __FUNCTION__);
+
+	FistColBoxLeft->SetCollisionProfileName("Weapon");
+	FistColBoxRight->SetCollisionProfileName("Weapon");
+}
+
 void APunchKick01Character::AttackEnd()
 {
 	Log(ELogLevel::INFO, __FUNCTION__);
+
+	FistColBoxLeft->SetCollisionProfileName("NoCollison");
+	FistColBoxRight->SetCollisionProfileName("NoCollison");
 }
 
 void APunchKick01Character::Log(ELogLevel LogLevel, FString Message)

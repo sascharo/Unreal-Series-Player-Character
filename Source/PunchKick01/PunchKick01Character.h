@@ -73,13 +73,11 @@ class APunchKick01Character : public ACharacter
 	//UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (Bitmask, BitmaskEnum = "EAttackSection", AllowPrivateAccess = true))
 	//uint8 AttackSections;
 
-	UPROPERTY(EditAnywhere, Category = Animation,
-		meta = (AllowPrivateAccess = true, ClampMin = 0, UIMin = 0, UIMax = 100))
+	UPROPERTY(EditAnywhere, Category = Animation, meta = (AllowPrivateAccess = true, ClampMin = 0, UIMin = 0, UIMax = 100))
 	int32 NumberOfAttacksSeed = 0;
 
 	/* Number of melee attack sections */
-	UPROPERTY(EditAnywhere, Category = Animation, /*DisplayName = "Number Of Attacks",*/
-		meta = (AllowPrivateAccess = true, ClampMin = 1, ClampMax = 3, UIMin = 1, UIMax = 3))
+	UPROPERTY(EditAnywhere, Category = Animation, /*DisplayName = "Number Of Attacks",*/ meta = (AllowPrivateAccess = true, ClampMin = 1, ClampMax = 3, UIMin = 1, UIMax = 3))
 	int32 NumberOfAttackSections = 3;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = true))
@@ -95,12 +93,17 @@ public:
 	virtual void BeginPlay() override;
 
 	/*
-	* AttackStart - trrigered when the player initiates an attack
+	* AttackInput - triggers attack animations based on user input
+	*/
+	void AttackInput();
+
+	/*
+	* AttackStart - triggered when the player initiates an attack
 	*/
 	void AttackStart();
 
 	/*
-	* AttackEnd - trrigered when the player stops the attack
+	* AttackEnd - triggered when the player stops the attack
 	*/
 	void AttackEnd();
 

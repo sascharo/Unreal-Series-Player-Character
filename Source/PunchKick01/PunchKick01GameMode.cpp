@@ -1,5 +1,3 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
 #include "PunchKick01GameMode.h"
 #include "PunchKick01Character.h"
 #include "UObject/ConstructorHelpers.h"
