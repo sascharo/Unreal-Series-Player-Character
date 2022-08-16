@@ -63,11 +63,13 @@ APunchKick01Character::APunchKick01Character()
 	FistColBoxLeft->SetupAttachment(RootComponent);
 	FistColBoxLeft->SetWorldScale3D(Scale);
 	FistColBoxLeft->SetCollisionProfileName("NoCollision");
+	FistColBoxLeft->SetNotifyRigidBodyCollision(false);
 
 	FistColBoxRight = CreateDefaultSubobject<UBoxComponent>(TEXT("FistCollisionBoxRight"));
 	FistColBoxRight->SetupAttachment(RootComponent);
 	FistColBoxRight->SetWorldScale3D(Scale);
 	FistColBoxRight->SetCollisionProfileName("NoCollision");
+	FistColBoxRight->SetNotifyRigidBodyCollision(false);
 
 	//FistColBoxLeft->SetHiddenInGame(false);
 	//FistColBoxLeft->SetHiddenInGame(false);
@@ -83,6 +85,9 @@ void APunchKick01Character::BeginPlay()
 
 	FistColBoxLeft->AttachToComponent(GetMesh(), AttachmentRules, "sock_hand_l_col");
 	FistColBoxRight->AttachToComponent(GetMesh(), AttachmentRules, "sock_hand_r_col");
+
+	FistColBoxLeft->OnComponentHit.AddDynamic(this, &APunchKick01Character::OnAttackHit);
+	FistColBoxRight->OnComponentHit.AddDynamic(this, &APunchKick01Character::OnAttackHit);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -202,7 +207,10 @@ void APunchKick01Character::AttackStart()
 	Log(ELogLevel::INFO, __FUNCTION__);
 
 	FistColBoxLeft->SetCollisionProfileName("Weapon");
+	FistColBoxLeft->SetNotifyRigidBodyCollision(true);
+		
 	FistColBoxRight->SetCollisionProfileName("Weapon");
+	FistColBoxRight->SetNotifyRigidBodyCollision(true);
 }
 
 void APunchKick01Character::AttackEnd()
@@ -210,7 +218,16 @@ void APunchKick01Character::AttackEnd()
 	Log(ELogLevel::INFO, __FUNCTION__);
 
 	FistColBoxLeft->SetCollisionProfileName("NoCollison");
+	FistColBoxLeft->SetNotifyRigidBodyCollision(false);
+	
 	FistColBoxRight->SetCollisionProfileName("NoCollison");
+	FistColBoxRight->SetNotifyRigidBodyCollision(false);
+}
+
+void APunchKick01Character::OnAttackHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Log(ELogLevel::INFO, __FUNCTION__);
 }
 
 void APunchKick01Character::Log(ELogLevel LogLevel, FString Message)
